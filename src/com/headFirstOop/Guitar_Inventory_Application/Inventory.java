@@ -8,33 +8,44 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Inventory {
-    private List<Guitar> guitarList;//object doesn't get created until done with new operator. Here just declared.
+
+    private List<Instrument> instrumentList;//object doesn't get created until done with new operator. Here just declared.
 
     public Inventory() {
-        guitarList=new LinkedList<Guitar>();
+
+        instrumentList=new LinkedList();
     }
 
 
 
 
-    public void addGuitar(Guitar newGuitar) {    //adding new guitar object ot list
+ /*   public void addInstrument(String serialNumber, double price, InstrumentSpec spec) {    //adding new guitar object ot list
 
-        guitarList.add(newGuitar);
+        Instrument ins=null;
+
+        if (spec instanceof  GuitarSpec){
+            ins=new Guitar(serialNumber,price,(GuitarSpec)spec);
+        }
+        else if(spec instanceof MandolinSpecs){
+            ins=new Mandolin(serialNumber,price,(MandolinSpecs) spec);
+        }
+
+        instrumentList.add(ins);
 
         //had guitar object been passed here from main, this method did not require change
     }
+*/
+
+    public void addInstrument(Instrument ins) {
+        instrumentList.add(ins)  ;
+    }
 
 
 
-
-
-
-    public Guitar getGuitar(String serialNumber ) {         //owner search based upon number., by iterating inventory list
-        for (Guitar obj:guitarList){
+        public Instrument get(String serialNumber ) {         //owner search based upon number., by iterating inventory list
+        for (Instrument obj:instrumentList){
 if (obj.getSerialNumber().equals(serialNumber)) {
-    Guitar guitarobj1 = obj;
-   return guitarobj1;
-
+   return obj ;
 }
 else{
     continue;}
@@ -63,27 +74,80 @@ return null;
 
 
 //new business requirements, with new guitars getting added in inventory// returning multiple guitars matching client preference
-    public List<Guitar> search(GuitarSpec guitarObj) {            //client search based upon guitar field preference. by iterating inventory list
-        List<Guitar>  guitar=new LinkedList<Guitar>();
+   /* public List<Instrument> search(GuitarSpec guitarObj) {            //client search based upon guitar field preference. by iterating inventory list
+        List<Instrument>  guitar=new LinkedList<Instrument>();
         if (guitarObj!=null) {
-            for (Guitar obj : guitarList) {
+            for (Instrument obj : instrumentList) {
 
-               /* if (obj.getGuitarspec().getBackWood()==(guitarObj.getBackWood()) && obj.getGuitarspec().getBuilder()==(guitarObj.getBuilder()) && obj.getGuitarspec().getModel().equalsIgnoreCase(guitarObj.getModel()) && obj.getGuitarspec().getType()==(guitarObj.getType()) && obj.getGuitarspec().getTopWood()==(guitarObj.getTopWood())&& obj.getGuitarspec().getNoOfStrings()==(guitarObj.getNoOfStrings())) {*/
-                  //  guitar.add(obj); this shall give NPE
+                *//* if (obj.getGuitarspec().getBackWood()==(guitarObj.getBackWood()) && obj.getGuitarspec().getBuilder()==(guitarObj.getBuilder()) && obj.getGuitarspec().getModel().equalsIgnoreCase(guitarObj.getModel()) && obj.getGuitarspec().getType()==(guitarObj.getType()) && obj.getGuitarspec().getTopWood()==(guitarObj.getTopWood())&& obj.getGuitarspec().getNoOfStrings()==(guitarObj.getNoOfStrings())) {*//*
+                //  guitar.add(obj); this shall give NPE
 
                 {
-                if(obj.getGuitarspec().matchSpec(guitarObj,obj.getGuitarspec()))                               //delegating comparison task to GuitarSpec object, than comparing here
+                    if(obj.getSpecification().matchSpec(guitarObj))                               //delegating comparison task to GuitarSpec object, than comparing here
 //above if to be worked upon
-                    guitar.add(obj);
+                        guitar.add(obj);
                 }
             }
 
         }
         return guitar ;
 
+    }*/
+
+
+    /*public List<Instrument> search(MandolinSpecs mandolinObj) {            //client search based upon guitar field preference. by iterating inventory list
+        List<Instrument>  mandolin=new LinkedList<Instrument>();
+        if (mandolinObj!=null) {
+            for (Instrument obj : instrumentList) {
+
+                *//* if (obj.getGuitarspec().getBackWood()==(guitarObj.getBackWood()) && obj.getGuitarspec().getBuilder()==(guitarObj.getBuilder()) && obj.getGuitarspec().getModel().equalsIgnoreCase(guitarObj.getModel()) && obj.getGuitarspec().getType()==(guitarObj.getType()) && obj.getGuitarspec().getTopWood()==(guitarObj.getTopWood())&& obj.getGuitarspec().getNoOfStrings()==(guitarObj.getNoOfStrings())) {*//*
+                //  guitar.add(obj); this shall give NPE
+
+                {
+                    if(obj.getSpecification().matchSpec(mandolinObj))                               //delegating comparison task to GuitarSpec object, than comparing here
+//above if to be worked upon
+                        mandolin.add(obj);
+                }
+            }
+
+        }
+        return mandolin ;
+
+    }*/
+
+
+
+    // search instrument based upon client specifications.
+    public List<Instrument>  search(InstrumentSpec insSpec){
+        List<Instrument> list=new LinkedList<Instrument>();
+if (insSpec!=null) {
+    for (Instrument list1:instrumentList) {
+        if (list1.getSpecification().matchSpec(insSpec)){
+
+if ((insSpec instanceof GuitarSpec) && (list1.getSpecification() instanceof  GuitarSpec)){
+    GuitarSpec  guitarSpec=(GuitarSpec) insSpec;
+    GuitarSpec  guitarSpec1=(GuitarSpec) list1.getSpecification() ;
+    if (guitarSpec.getNoOfStrings()==guitarSpec1.getNoOfStrings()){
+list.add(list1);
     }
 
+}
+
+            else if ((insSpec instanceof MandolinSpecs) && (list1.getSpecification() instanceof  MandolinSpecs)){
+                MandolinSpecs  mandolinSpec=(MandolinSpecs) insSpec;
+                MandolinSpecs  mandolinSpec1=(MandolinSpecs) list1.getSpecification() ;
+
+    if (mandolinSpec.getStyle()==mandolinSpec1.getStyle()){
+        list.add(list1);
+    }
+            }
 
 
+        }
+    }
+}
+return list;
+
+    }
 
 }
