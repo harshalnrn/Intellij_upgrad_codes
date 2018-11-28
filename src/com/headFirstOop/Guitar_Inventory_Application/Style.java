@@ -1,4 +1,6 @@
 package com.headFirstOop.Guitar_Inventory_Application;
 
-public class Style {
+public enum Style {
+
+    Indian, Pakistani, irani, israeli, Saudi, Afghani;
 }
